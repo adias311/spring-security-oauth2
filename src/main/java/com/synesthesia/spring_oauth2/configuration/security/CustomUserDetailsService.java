@@ -3,7 +3,6 @@ package com.synesthesia.spring_oauth2.configuration.security;
 import com.synesthesia.spring_oauth2.entity.Role;
 import com.synesthesia.spring_oauth2.entity.User;
 import com.synesthesia.spring_oauth2.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
