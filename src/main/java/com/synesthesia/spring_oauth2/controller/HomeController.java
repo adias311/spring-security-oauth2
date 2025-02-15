@@ -1,24 +1,26 @@
 package com.synesthesia.spring_oauth2.controller;
 
-import com.synesthesia.spring_oauth2.dto.response.HomeResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import com.synesthesia.spring_oauth2.dto.UserDTO;
+import com.synesthesia.spring_oauth2.dto.response.WebResponse;
+import com.synesthesia.spring_oauth2.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
 
+    @Autowired
+    private UserService userService;
     @GetMapping("/")
-    public ResponseEntity<HomeResponse> hello(Authentication authentication) {
+    public WebResponse<UserDTO> home(@AuthenticationPrincipal Jwt jwt) {
+        UserDTO user = jwt == null
+                ? UserDTO.builder().username("Guest").build()
+                : userService.getAuthenticatedUser(jwt);
 
-        HomeResponse homeResponse = new HomeResponse();
-        homeResponse.setName("Guest");
-        if (authentication != null)  {
-            homeResponse.setName(authentication.getName());
-            return ResponseEntity.status(200).body(homeResponse);
-        };
-        return ResponseEntity.status(200).body(homeResponse);
+        return WebResponse.<UserDTO>builder().data(user).build();
     }
 
 }
