@@ -1,16 +1,9 @@
 package com.synesthesia.spring_oauth2.configuration.security;
 
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
-import com.synesthesia.spring_oauth2.configuration.jwt.JwtAuthenticationFilter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
+import com.synesthesia.spring_oauth2.configuration.jwt.CustomJwtGrantedAuthoritiesConverter;
+import com.synesthesia.spring_oauth2.configuration.security.exception.CustomAccessDeniedHandler;
+import com.synesthesia.spring_oauth2.configuration.security.exception.HandleAuthenticationEntryPoint;
+import com.synesthesia.spring_oauth2.configuration.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,42 +13,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-
-
-import java.io.IOException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-
-    @Value("${jwt.public.key}")
-    private RSAPublicKey key;
-
-    @Value("${jwt.private.key}")
-    private RSAPrivateKey priv;
-
-    @Value("${auth.github.url}")
-    private String authGithubUrl;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -63,15 +28,15 @@ public class WebSecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors ->
-                cors.configurationSource(request -> corsConfiguration())
+                cors.configurationSource(request -> corsConfiguration().configure())
             )
             .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .oauth2ResourceServer(
-                oauth -> oauth.jwt(withDefaults())
+            .oauth2Login(oauth2Login -> oauth2Login.successHandler(customOAuth2SuccessHandler()))
+            .oauth2ResourceServer(oauth2 ->
+                oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationConverter()))
             )
-            .oauth2Login(oauth2Login -> oauth2Login.defaultSuccessUrl("/"))
             .authorizeHttpRequests(
                 authz -> authz
                     .requestMatchers(HttpMethod.GET , "/").permitAll()
@@ -79,20 +44,21 @@ public class WebSecurityConfig {
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptions -> exceptions
-                    .authenticationEntryPoint(this::handleAuthenticationEntryPoint)
-                    .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-            );
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .authenticationEntryPoint(handleAuthenticationEntryPoint())
+                    .accessDeniedHandler(new CustomAccessDeniedHandler())
+            )
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-    public CorsConfiguration corsConfiguration() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5500" , "http://127.0.0.1:5500/"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        return configuration;
+    public WebCorsConfig corsConfiguration() {
+        return new WebCorsConfig();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
@@ -103,57 +69,19 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public JwtAuthenticationConverter customJwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(new CustomJwtGrantedAuthoritiesConverter());
+        return converter;
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(this.key).build();
+    public HandleAuthenticationEntryPoint handleAuthenticationEntryPoint() {
+        return new HandleAuthenticationEntryPoint();
     }
 
     @Bean
-    public JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
-        JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-        return new NimbusJwtEncoder(jwks);
+    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler() {
+        return new CustomOAuth2SuccessHandler();
     }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-       return new JwtAuthenticationFilter();
-    }
-
-    private void handleAuthenticationEntryPoint(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException
-    ) throws IOException, IOException {
-        if (request.getRequestURI().startsWith("/login/oauth2/authorization/")) {
-            try {
-                String authUrl = determineAuthUrl(request);
-                new LoginUrlAuthenticationEntryPoint(authUrl)
-                        .commence(request, response, authException);
-            } catch (IllegalArgumentException | ServletException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            }
-        } else {
-            new BearerTokenAuthenticationEntryPoint().commence(request, response, authException);
-        }
-    }
-
-    private String determineAuthUrl(HttpServletRequest request) {
-        String client = request.getParameter("client");
-
-        if ("github".equals(client)) {
-            return authGithubUrl;
-        } else if ("google".equals(client)) {
-            return authGithubUrl;
-        } else {
-            throw new IllegalArgumentException("Invalid or missing client parameter");
-        }
-
-    }
-
-
 }

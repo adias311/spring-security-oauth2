@@ -3,27 +3,40 @@ package com.synesthesia.spring_oauth2.configuration.jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class JwtHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     private final Map<String, String> customHeaders;
 
-    public JwtHttpServletRequestWrapper(HttpServletRequest request) {
+    public JwtHttpServletRequestWrapper(HttpServletRequest request){
         super(request);
-        this.customHeaders = new HashMap<>();
+        this.customHeaders = new HashMap<String, String>();
     }
 
-    public void addHeader(String name, String value) {
+    public void putHeader(String name, String value){
         this.customHeaders.put(name, value);
     }
 
-    @Override
     public String getHeader(String name) {
-        if (this.customHeaders.containsKey(name)) {
-            return this.customHeaders.get(name);
+        String headerValue = customHeaders.get(name);
+
+        if (headerValue != null){
+            return headerValue;
         }
-        return super.getHeader(name);
+        return ((HttpServletRequest) getRequest()).getHeader(name);
+    }
+
+    public Enumeration<String> getHeaderNames() {
+        Set<String> set = new HashSet<String>(customHeaders.keySet());
+
+        @SuppressWarnings("unchecked")
+        Enumeration<String> e = ((HttpServletRequest) getRequest()).getHeaderNames();
+        while (e.hasMoreElements()) {
+            String n = e.nextElement();
+            set.add(n);
+        }
+
+        return Collections.enumeration(set);
     }
 }

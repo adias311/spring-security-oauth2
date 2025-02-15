@@ -7,7 +7,6 @@ import com.synesthesia.spring_oauth2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ public class DashboardController {
             produces = "application/json"
     )
     @PreAuthorize("hasRole('USER')")
-    public WebResponse<UserDTO> user(@AuthenticationPrincipal Jwt authentication) {
+    public WebResponse<UserDTO> user(Authentication authentication) {
         UserDTO authenticatedUser = userService.getAuthenticatedUser(authentication);
         return WebResponse.<UserDTO>builder().data(authenticatedUser).build();
     }
@@ -35,7 +34,7 @@ public class DashboardController {
             produces = "application/json"
     )
     @PreAuthorize("hasRole('USER') and hasRole('SELLER')")
-    public WebResponse<UserDTO> seller(@AuthenticationPrincipal Jwt authentication) {
+    public WebResponse<UserDTO> seller(Authentication authentication) {
         UserDTO authenticatedUser = userService.getAuthenticatedUser(authentication);
         return WebResponse.<UserDTO>builder().data(authenticatedUser).build();
     }
@@ -45,7 +44,7 @@ public class DashboardController {
             produces = "application/json"
     )
     @PreAuthorize("hasRole('USER') and hasRole('ADMIN')")
-    public WebResponse<UserDTO> admin(@AuthenticationPrincipal Jwt authentication) {
+    public WebResponse<UserDTO> admin(Authentication authentication) {
         UserDTO authenticatedUser = userService.getAuthenticatedUser(authentication);
         return WebResponse.<UserDTO>builder().data(authenticatedUser).build();
     }

@@ -1,18 +1,16 @@
-package com.synesthesia.spring_oauth2.dto.request;
+package com.synesthesia.spring_oauth2.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class LoginRequest {
-
+public class UserDTO {
     private String username;
-
-    private String password;
-
+    private List<RoleDTO> roles;
 }
