@@ -4,6 +4,26 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Ignore application properties (sensitive configs) ###
+src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/resources/application-*.properties
+src/main/resources/application-*.yml
+
+### Ignore logs ###
+logs/
+*.log
+log/
+
+### Ignore dependency caches ###
+**/target/
+**/build/
+
+### Ignore environment-specific files ###
+.env
+.env.local
+.env.*.local
+
 ### STS ###
 .apt_generated
 .classpath

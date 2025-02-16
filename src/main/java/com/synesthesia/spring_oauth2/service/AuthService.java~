@@ -113,10 +113,9 @@ public class AuthService {
     public String loginOauth2(OAuth2User oauth2User) {
 
         try {
-            String username = (String) Optional
-                    .ofNullable(oauth2User.getAttribute("login"))
-                    .orElse(oauth2User.getAttribute("name"));
-            String type = (oauth2User.getAttribute("login") != null) ? "OAUTH2_GITHUB" : "OAUTH2_GOOGLE";
+            String username = (String) Optional.ofNullable(authentication.getAttribute("login"))
+                    .orElseGet(() -> authentication.getAttribute("name"));
+            String type = (authentication.getAttribute("login") != null) ? "OAUTH2_GITHUB" : "OAUTH2_GOOGLE";
 
             User userDB = userRepository.findFirstByUsername(username)
                     .orElseGet(() -> {

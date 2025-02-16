@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
-@Component
 public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired

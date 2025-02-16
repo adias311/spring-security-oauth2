@@ -55,7 +55,7 @@ public class AuthController {
 
         cookieService.deleteCookie(response, "token");
 
-        return WebResponse.<String>builder().build();
+        return WebResponse.<String>builder().data("Logout successful").build();
     }
 
 

@@ -18,6 +18,9 @@ public class HandleAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Value("${auth.github.url}")
     private String authGithubUrl;
 
+    @Value("${auth.google.url}")
+    private String authGoogleUrl;
+
     @Override
     public void commence(
             HttpServletRequest request,
@@ -49,7 +52,7 @@ public class HandleAuthenticationEntryPoint implements AuthenticationEntryPoint 
         if ("github".equals(client)) {
             return authGithubUrl;
         } else if ("google".equals(client)) {
-            return authGithubUrl;
+            return authGoogleUrl;
         } else {
             throw new IllegalArgumentException("Invalid or missing client parameter");
         }

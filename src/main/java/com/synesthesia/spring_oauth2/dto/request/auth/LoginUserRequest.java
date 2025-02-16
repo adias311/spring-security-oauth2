@@ -17,7 +17,6 @@ public class LoginUserRequest {
     @Size(min = 5, max = 100)
     private String username;
 
-    @NotBlank
     @Size(min = 3, max = 10)
     private String password;
 

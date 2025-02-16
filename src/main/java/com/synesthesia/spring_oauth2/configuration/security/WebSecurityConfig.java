@@ -27,15 +27,11 @@ public class WebSecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .cors(cors ->
-                cors.configurationSource(request -> corsConfiguration().configure())
-            )
-            .sessionManagement(
-                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+            .cors(cors -> cors.configurationSource(request -> corsConfiguration().configure()))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .oauth2Login(oauth2Login -> oauth2Login.successHandler(customOAuth2SuccessHandler()))
             .oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationConverter()))
+                    oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationConverter()))
             )
             .authorizeHttpRequests(
                 authz -> authz
@@ -57,15 +53,20 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration
     ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler() {
+        return new CustomOAuth2SuccessHandler();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
@@ -80,8 +81,4 @@ public class WebSecurityConfig {
         return new HandleAuthenticationEntryPoint();
     }
 
-    @Bean
-    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler() {
-        return new CustomOAuth2SuccessHandler();
-    }
 }
