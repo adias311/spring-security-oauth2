@@ -44,7 +44,7 @@ public class DashboardController {
             path = "/admin",
             produces = "application/json"
     )
-    @PreAuthorize("hasRole('USER') and hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public WebResponse<UserDTO> admin(@AuthenticationPrincipal Jwt authentication) {
         UserDTO authenticatedUser = userService.getAuthenticatedUser(authentication);
         return WebResponse.<UserDTO>builder().data(authenticatedUser).build();
