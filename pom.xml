@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.synesthesia</groupId>
-	<artifactId>spring-oauth2</artifactId>
+	<artifactId>springoauth2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-oauth2</name>
 	<description>Implement Spring OAuth2</description>
