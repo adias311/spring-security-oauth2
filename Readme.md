@@ -1,8 +1,6 @@
 # 🔐 Spring Security OAuth2
 
-<p align="center">
-<img src=".github/images/banner.png" alt="Spring Security OAuth2 Banner" />
-</p>
+<p align="center"></p>
 
 <details>
   <summary>📌 Table of Contents</summary>
@@ -24,56 +22,78 @@
 
 ---
 
-## 🔍 About
+## 🔍 About <span id="about"></span>
+Spring Security OAuth2 is an OAuth2-based **authentication and authorization project** using **Spring Boot**. This project allows applications to **authenticate users with OAuth2 providers** such as **Google and GitHub.**.
 
-Spring Security OAuth2 adalah proyek **autentikasi dan otorisasi berbasis OAuth2** menggunakan **Spring Boot**. Proyek ini memungkinkan aplikasi untuk **autentikasi pengguna dengan OAuth2 providers** seperti **Google, GitHub, Keycloak, dll**.
-
-### ✨ Features
-- **OAuth2 Login dengan Google & GitHub**
-- **JSON Web Token (JWT) untuk autentikasi**
-- **Role-Based Access Control (RBAC)**
-- **Spring Security dengan Custom AuthenticationEntryPoint**
-- **Token Refresh & Logout Support**
+### ✨ Features <span id="features"></span>
+- **OAuth2 Login with Google & GitHub**
+- **Role Based Access Control (RBAC)**
+- **JSON Web Token (JWT)**
+- **Http Only & Cookie Based Authentication**
 
 ---
 
-## 🛠 Built With
+## 🛠 Built With <span id="built-with"></span>
 
-| Teknologi  | Deskripsi |
-|------------|-----------|
-| ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white) | Backend framework utama |
-| ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white) | Keamanan aplikasi |
-| ![OAuth2](https://img.shields.io/badge/OAuth2-007EC6?style=for-the-badge&logo=oauth&logoColor=white) | Autentikasi dengan penyedia pihak ketiga |
-| ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white) | JSON Web Token untuk otorisasi |
-| ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white) | Database yang digunakan |
+| Teknologi                                                                                                                 | Deskripsi             |
+|---------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)    | Main backend framework |
+| ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white) | Application security  |
+| ![OAuth2](https://img.shields.io/badge/OAuth2-007EC6?style=for-the-badge&logo=oauth2&logoColor=white)                     | Authentication with third-party providers |
+| ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)                  | JSON Web Token to store user information |
+| ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)                        | Application Databases |
 
 ---
 
-## 🚀 Usage
+## 🚀 Usage <span id="usage"></span>
 
 1. **OAuth2 Login:**
-    - Untuk login dengan Google atau GitHub, arahkan browser ke:
-      ```
-      http://localhost:8080/login/oauth2/authorization/google
-      http://localhost:8080/login/oauth2/authorization/github
-      ```
-    - Setelah login, aplikasi akan mengeluarkan **JWT Token** untuk akses API.
+   - Untuk login dengan Google atau GitHub, arahkan browser ke:
+     ```
+     http://localhost:8080/login/oauth2/authorization/google
+     http://localhost:8080/login/oauth2/authorization/github
+     ```
+   - Setelah login, aplikasi akan mengeluarkan **JWT Token** untuk akses API.
 
 2. **Akses API dengan Token:**
-    - Gunakan **JWT Token** yang diterima dalam setiap permintaan ke endpoint API:
-      ```
-      Authorization: Bearer <your_token>
-      ```
-    - Endpoint contoh:
-      ```
-      GET /api/user/profile
-      ```
+   - Gunakan **JWT Token** yang diterima dalam setiap permintaan ke endpoint API:
+     ```
+     Authorization: Bearer <your_token>
+     ```
+   - Endpoint contoh:
+     ```
+     GET /api/user/profile
+     ```
 
 ---
 
-## 🔧 Getting Started
+## 🔧 Getting Started <span id="getting-started"></span>
 
-### **1️⃣ Clone Repository**
-```sh
-git clone https://github.com/username/spring-security-oauth2.git
-cd spring-security-oauth2
+#### 1. Clone the repository
+
+```shell
+git clone https://github.com/prazzon/flexbox-labs.git
+```
+
+#### 2. Navigate to the app directory
+```shell
+cd flexbox-labs
+```
+
+#### 3. Install npm dependencies
+
+```shell
+npm install
+```
+
+#### 4. Run the dev server
+
+```shell
+npm run dev
+```
+
+#### 5. Open the app in your browser
+
+Visit [http://localhost:5173](http://localhost:5173) in your browser.
+
+

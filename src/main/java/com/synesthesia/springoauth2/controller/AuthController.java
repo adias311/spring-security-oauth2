@@ -8,10 +8,10 @@ import com.synesthesia.springoauth2.dto.response.WebResponse;
 import com.synesthesia.springoauth2.service.AuthService;
 import com.synesthesia.springoauth2.service.CookieService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -39,10 +39,8 @@ public class AuthController {
             produces = "application/json"
     )
     public WebResponse<LoginUserResponse> login(@RequestBody LoginUserRequest loginUserRequest,  HttpServletResponse response) {
-
         LoginUserResponse userLogin = authService.login(loginUserRequest);
         cookieService.setCookie(response,"token", userLogin.getToken());
-
         return WebResponse.<LoginUserResponse>builder().data(userLogin).build();
     }
 
@@ -51,9 +49,7 @@ public class AuthController {
             produces = "application/json"
     )
     public WebResponse<String> logout(HttpServletResponse response) {
-
         cookieService.deleteCookie(response, "token");
-
         return WebResponse.<String>builder().data("Logout successful").build();
     }
 

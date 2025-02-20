@@ -36,7 +36,10 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(
                 authz -> authz
                     .requestMatchers(HttpMethod.GET , "/").permitAll()
-                    .requestMatchers(HttpMethod.POST , "/api/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.GET , "/v3/**").permitAll()
+                    .requestMatchers(HttpMethod.GET , "/swagger-ui/*").permitAll()
+                    .requestMatchers(HttpMethod.POST , "/api/auth/register").permitAll()
+                    .requestMatchers(HttpMethod.POST , "/api/auth/login").permitAll()
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptions -> exceptions
