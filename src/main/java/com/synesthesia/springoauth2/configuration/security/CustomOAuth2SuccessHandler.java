@@ -22,7 +22,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Autowired
     private CookieService cookieService;
 
-    @Value("${auth.oauth2.redirectUrl}")
+    @Value("${auth.oauth2.success.redirectUrl}")
     private String redirectUrl;
 
     @Override

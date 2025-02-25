@@ -16,7 +16,7 @@ jwt.public.key=classpath:app.pub
 # OAuth2 properties
 auth.github.url=/oauth2/authorization/github
 auth.google.url=/oauth2/authorization/google
-auth.oauth2.redirectUrl=https://your-app.dev
+auth.oauth2.success.redirectUrl=https://your-app.dev
 
 # GitHub OAuth2 (Use Environment Variables or Secrets)
 spring.security.oauth2.client.registration.github.client-id=your_github_client_id
