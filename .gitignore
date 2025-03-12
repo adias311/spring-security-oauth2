@@ -7,6 +7,7 @@ target/
 src/main/resources/application.properties
 src/main/resources/application.yml
 src/main/resources/application-*.properties
+src/main/resources/*.properties
 src/main/resources/application-*.yml
 
 ## Ignore backup files

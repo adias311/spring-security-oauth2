@@ -16,10 +16,7 @@ public class HomeController {
     private UserService userService;
     @GetMapping("/")
     public WebResponse<UserDTO> home(@AuthenticationPrincipal Jwt jwt) {
-        UserDTO user = jwt == null
-                ? UserDTO.builder().username("Guest").build()
-                : userService.getAuthenticatedUser(jwt);
-
+        UserDTO user = userService.getAuthenticatedUser(jwt);
         return WebResponse.<UserDTO>builder().data(user).build();
     }
 

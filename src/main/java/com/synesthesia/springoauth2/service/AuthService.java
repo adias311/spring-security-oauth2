@@ -57,7 +57,7 @@ public class AuthService {
         try {
             validationService.validate(registerUserRequest);
 
-            if (userRepository.existsByUsername(registerUserRequest.getUsername())) {
+            if (userRepository.findFirstByUsername(registerUserRequest.getUsername()).isPresent()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
             }
 
@@ -98,7 +98,7 @@ public class AuthService {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtService.createJwtAuthBasic(authentication);
+            String jwt = jwtService.generateJwtAuthBasic(authentication);
 
             return LoginUserResponse.builder().token(jwt).message("Login successful").build();
 
@@ -130,7 +130,7 @@ public class AuthService {
                         return user;
                     });
 
-            return jwtService.createJwtOauth2Github(userDB);
+            return jwtService.generateJwtOauth2(userDB);
         } catch (JpaSystemException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Database server error" + e.getMessage());
         } catch (Exception e) {

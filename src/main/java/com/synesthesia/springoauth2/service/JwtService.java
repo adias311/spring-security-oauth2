@@ -22,23 +22,23 @@ public class JwtService {
 
     Instant now = Instant.now();
 
-    public String createJwtAuthBasic(Authentication authentication) {
+    public String generateJwtAuthBasic(Authentication authentication) {
         String username = authentication.getName();
         String[] roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toArray(String[]::new);
-        return setClaimsJwt(username, roles);
+        return generateClaimsJwt(username, roles);
     }
 
-    public String createJwtOauth2Github(User user) {
+    public String generateJwtOauth2(User user) {
         String username = user.getUsername();
         String[] roles = user.getRoles().stream()
                 .map(Role::getName)
                 .toArray(String[]::new);
-        return setClaimsJwt(username, roles);
+        return generateClaimsJwt(username, roles);
     }
 
-    public  String setClaimsJwt(String username, String[] roles) {
+    public  String generateClaimsJwt(String username, String[] roles) {
         try {
             int expiry = 2160000;
             JwtClaimsSet claims = JwtClaimsSet.builder()

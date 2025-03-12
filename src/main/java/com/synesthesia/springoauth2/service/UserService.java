@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,18 +17,26 @@ public class UserService {
     public UserDTO getAuthenticatedUser(Jwt authentication) {
 
         try {
-            ArrayList<RoleDTO> scope = authentication.getClaimAsStringList("roles").stream()
+
+            if (authentication == null) {
+                return UserDTO.builder()
+                        .username("Guest")
+                        .roles(new ArrayList<>())
+                        .build();
+            }
+
+            List<RoleDTO> scope = authentication.getClaimAsStringList("roles")
+                    .stream()
                     .map(RoleDTO::new)
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toList());
 
             return UserDTO.builder()
                     .username(authentication.getSubject())
                     .roles(scope)
                     .build();
+
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error processing user data", e);
         }
-
     }
-
 }
