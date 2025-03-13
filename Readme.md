@@ -54,7 +54,7 @@ Check out the live demo of Spring Security OAuth2:
 #### 1. Clone the repository
 
 ```shell
-git clone [https://github.com/adias311/spring-security-oauth2](https://github.com/adias311/spring-security-oauth2)
+git clone https://github.com/adias311/spring-security-oauth2
 ```
 
 #### 2. Configure application.properties
