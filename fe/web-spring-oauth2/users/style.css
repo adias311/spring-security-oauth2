@@ -1,0 +1,23 @@
+@import url(/assets/css/main.css);
+
+body {
+    display: none;
+}
+
+ul {
+    width: calc(100% - 100px);
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+    ul {
+        flex-direction: column;
+        gap: 25px;
+    }
+}

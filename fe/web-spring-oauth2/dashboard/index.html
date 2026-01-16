@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <section id="navbar">
+    <a href="?type=user">Dashboard User</a>
+    <a href="?type=seller">Dashboard Seller</a>
+    <a href="?type=admin">Dashboard Admin</a>
+    <a href="/">⬆️ Home</a>
+  </section>
+
+   <section>
+        <h1 id="header"></h1>
+        <h2 id="response"></h2>
+   </section>
+
+   <div id="spinner"></div>
+</body> 
+<script src="/assets/script/main.js"></script>
+<script>
+
+    const url = new URL(window.location.href);
+    const urlParam = url.searchParams.get("type"); 
+
+    const title = document.querySelector("title");
+    const header = document.getElementById("header");
+    const spinner = document.getElementById("spinner");
+    const responseEl = document.getElementById("response");
+
+    title.textContent = `Dashboard ${toPascalCase(urlParam)}`;
+    header.textContent = `Dashboard ${toPascalCase(urlParam)}`;
+
+    ((
+        async (urlParam) => {
+          try {
+            const response = await fetch(API_URL + `dashboard/${urlParam}` , {
+                method : 'GET',
+                credentials: 'include'
+            });
+
+            response.status == 401 ? window.location.href = '/auth/login/' : spinner.hidden = true;
+      
+            const res = await response.json();
+            const data = JSON.stringify(res, null, 2);
+            responseEl.innerHTML = `<pre>${data}</pre>`;
+          } catch (error) {
+            responseEl.textContent = error;
+          }
+        }
+    )(urlParam));
+
+</script>
+</html>

@@ -1,0 +1,24 @@
+center {
+    margin-top: 100px;
+}
+
+body {
+    display: none;
+}
+
+form {
+   display: flex; 
+   flex-direction: column;
+   width: 300px;
+   gap: 5px;
+   margin-bottom: 30px;
+}
+
+form label {
+    text-align: start;
+    padding-left: 2px ;
+}
+
+#error-message {
+    color: rgb(240, 123, 123);
+}

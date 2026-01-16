@@ -1,49 +1,23 @@
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Maven build
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### Ignore application properties (sensitive configs) ###
-src/main/resources/application.properties
-src/main/resources/application.yml
-src/main/resources/application-*.properties
-src/main/resources/*.properties
-src/main/resources/application-*.yml
-
-## Ignore backup files
-*.properties~
-*.java~
-
-### Ignore logs ###
-logs/
-*.log
-log/
-
-### Ignore dependency caches ###
 **/target/
-**/build/
 
-### Ignore environment-specific files ###
-.env
-.env.local
-.env.*.local
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
 .project
 .settings
 .springBeans
 .sts4-cache
+.env
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -53,5 +27,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# Sensitive config
+src/main/resources/application.properties
+src/main/resources/application.yml
+
+# OS
+.DS_Store
+Thumbs.db

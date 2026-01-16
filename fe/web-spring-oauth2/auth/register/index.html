@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/auth/style.css">
+</head>
+<body>
+    <center>
+        <h1>Register</h1>
+        <form id="register">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">    
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">     
+            <span id="error-message"></span>       
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="../login">login</a></p>
+        <h3>-- Or --</h3>
+        <button onclick="send('github')">Github</button>
+        <button onclick="send('google')">Google</button>
+    </center>
+</body>
+<script src="/assets/script/main.js"></script>
+<script>
+
+    checkUser();
+
+    document.getElementById("register").addEventListener("submit", async function(event) {
+        event.preventDefault(); 
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const errorMessage = document.getElementById("error-message");
+        errorMessage.textContent = "";
+
+        const loginData = {
+            username: username,
+            password: password
+        };
+
+        try {
+            const response = await fetch(API_URL + "api/auth/register", {
+                method: "POST",  
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginData)
+            });
+
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Register berhasil:", data);
+                window.location.href = "/auth/login/";
+            } else {
+                const errorData = await response.json();
+                console.log("Register gagal:", errorData);
+                errorMessage.textContent = errorData.errors;
+            }
+
+        } catch (error) {
+            console.error("Terjadi kesalahan:", error);
+        }
+    });
+
+</script>
+</html>

@@ -92,25 +92,18 @@ The project includes Swagger UI for API documentation and testing.
 **📌 Access OpenAPI JSON:**  
 👉 [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
-📌 **Example Swagger UI Screenshot:**  
-![Swagger UI](https://user-images.githubusercontent.com/12345678/swagger-screenshot.png)
-
 ---
 
 ### **2️⃣ Postman API Collection**
 We provide a **Postman Collection** for easy testing of API endpoints.
 
 📌 **Download Postman Collection:**  
-👉 [Postman Collection Link](https://github.com/your-repo/spring-oauth2-api.postman_collection.json)
 
 **📌 Import into Postman:**
 1. Open Postman
 2. Click **File → Import**
 3. Select the downloaded JSON file
 4. Test the API endpoints directly!
-
-📌 **Example Postman Screenshot:**  
-![Postman Screenshot](https://user-images.githubusercontent.com/12345678/postman-screenshot.png)
 
 ---
 

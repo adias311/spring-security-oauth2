@@ -1,0 +1,47 @@
+services:
+
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: spring_security
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./spring_security.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - spring-network
+
+  springoauth2:
+    image: adiasafnan/springoauth2:latest
+    restart: unless-stopped
+    pull_policy: never
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-network
+    depends_on:
+      - mysql
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      SERVER_PORT: 8080
+
+  web-spring-oauth2:
+    image: adiasafnan/web-spring-oauth2:latest
+    restart: unless-stopped
+    pull_policy: never
+    ports:
+      - "80:80"
+    networks:
+      - spring-network
+    depends_on:
+      - springoauth2
+    environment:
+      REACT_APP_API_URL: "http://springoauth2:8080"
+
+volumes:
+  mysql_data:
+
+networks:
+  spring-network:
+    driver: bridge

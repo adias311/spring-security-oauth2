@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style.css">
+</head> 
+<body>
+    <section id="navbar">
+        <a href="dashboard?type=user">Dashboard User</a>
+        <a href="dashboard?type=seller">Dashboard Seller</a>
+        <a href="dashboard?type=admin">Dashboard Admin</a>
+        <a id="list-users" href="users">List Users</a>
+        <a id="login" href="auth/login">➡️ Login</a>
+    </section>
+
+    <section id="content">
+        <h1>Spring Web Security</h1>
+        <h2 id="response"></h2>
+    </section>
+
+    <section id="logout">
+        <button id="logoutButton">⬅️ Logout</button>
+    </section>
+</body>
+<script src="/assets/script/main.js"></script>
+<script>
+
+    const responseEl = document.getElementById("response");
+    const listUsersEl = document.getElementById("list-users");
+    const loginEl = document.getElementById("login");    
+    const logoutEl = document.getElementById("logout");    
+
+    ((
+        async () => {
+          try {
+            const response = await fetch(API_URL , {
+                method : 'GET',
+                credentials: 'include'
+            });
+
+            const res = await response.json();
+            const username = res.data.username;
+            responseEl.textContent = "Hello, " + username;
+
+            if (username.includes("Guest")) {
+                loginEl.style.display = "inline-block";
+                listUsersEl.style.display = "inline-block";
+            } else {
+                logoutEl.style.display = "block";
+            }
+
+          } catch (error) {
+            responseEl.textContent = error;
+          }
+        }
+    )());
+
+    document.getElementById("logoutButton").addEventListener("click", async function() {
+        try {
+            const response = await fetch(API_URL + "api/auth/logout", {
+                method: "POST",
+                credentials: "include"        
+            });
+
+            if (response.ok) {
+                console.log("Logout successful");
+                location.reload();
+            } else {
+                console.error("Logout failed", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error during logout", error);
+        }
+    });
+</script>
+</html>

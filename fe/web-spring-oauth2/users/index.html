@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Users</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section id="navbar">
+        <a href="/dashboard/?type=user">Dashboard User</a>
+        <a href="/dashboard/?type=seller">Dashboard Seller</a>
+        <a href="/dashboard/?type=admin">Dashboard Admin</a>
+        <a href="#">List Users</a>
+        <a href="/">⬆️ Home</a>
+    </section>
+
+    <section id="list-user">
+        <h2>List Users : </h2> 
+        <ul>
+            <li>
+                <h3>User Basic</h3>
+                <p>username : user</p>
+                <p>password : user1234</p>
+                <p>roles : [user]</p>
+                <a href="/auth/login/?username=user&password=user1234">➡️ Login</a>
+            </li>
+            <li>
+                <h3>Seller</h3>
+                <p>username : seller</p>
+                <p>password : seller1234</p>
+                <p>roles : [user, seller]</p>
+                <a href="/auth/login/?username=seller&password=seller1234">➡️ Login</a>
+            </li>
+            <li>
+                <h3>Admin</h3>
+                <p>username : admin</p>
+                <p>password : admin1234</p>
+                <p>roles : [admin]</p>
+                <a href="/auth/login/?username=admin&password=admin1234">➡️ Login</a>
+            </li>          
+        </ul>
+    </section>
+</body>
+<script src="/assets/script/main.js"></script>
+<script>checkUser();</script>
+</html>

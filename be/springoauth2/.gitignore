@@ -1,0 +1,57 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Ignore application properties (sensitive configs) ###
+src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/resources/application-*.properties
+src/main/resources/*.properties
+src/main/resources/application-*.yml
+
+## Ignore backup files
+*.properties~
+*.java~
+
+### Ignore logs ###
+logs/
+*.log
+log/
+
+### Ignore dependency caches ###
+**/target/
+**/build/
+
+### Ignore environment-specific files ###
+.env
+.env.local
+.env.*.local
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
